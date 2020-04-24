@@ -7,6 +7,7 @@
 #include<iostream>
 #include<vector>
 #include<cmath>
+#include<algorithm>
 
 using namespace std;
 
@@ -19,59 +20,50 @@ int main()
 	cin >> N;
 
 	vector<int> vec;
-	vector<int> count(8001); //-4000~4000
-	vector<int> result(N);
+	vector<int> count(8001,0);   //-4000~4000 수 개수 카운트 벡터
 
-	for (int i = 0; i < count.size(); ++i)
-		count[i] = 0;
-
-	int n;
-	int sum = 0;
-	int min = 4001, max = -4001;
+	int num;
+	int sum = 0;                 //산술 평균 구하기 위한 N개의 수들의 합
+	int min = 4001, max = -4001; //범위를 구하기 위한 최솟값과 최댓값
 	for (int i = 0; i < N; ++i)
 	{
-		cin >> n;
-		sum += n;
-		if (n > max)
-			max = n;
-		if (n < min)
-			min = n;
-		vec.push_back(n);
-		count[n + 4000]++;
+		cin >> num;
+		sum += num;         
+		if (num > max)
+			max = num;
+		if (num < min)
+			min = num;
+		vec.push_back(num);
+		count[num + 4000]++;   //count[0] => -4000 , count[8000] => 4000 이다.
 	}
 
 	//최빈값 찾기
 	int maxFrequency = 0;
-	bool second = false; //최빈값 중 두 번째로 작은 값을 찾기 위한 변수
-	for (int i = 0; i < count.size(); ++i)
+	bool second = false;   //여러개 있는 최빈값 중 두 번째로 작은 값을 찾기 위한 bool타입
+	int secondFrequency;
+	for (int i = 1; i <= 8000; ++i)
 	{
 		if (count[i] > count[maxFrequency]) {
-			if (second == true)
-				second = false;
+			//더 큰 값을 찾았다면 second를 이미 구했을 경우를 위해 다시 false로 바꿔준다.
+			second = false;
 			maxFrequency = i;
 		}
+		//가장 큰 값과 같으면서 두 번째로 작은 값을 찾은 경우
 		else if (count[i] == count[maxFrequency] && second == false) {
-			maxFrequency = i;
 			second = true;
+			secondFrequency = i;
 		}
 	}
 
-	//누적합
-	for (int i = 0; i < count.size() -1 ; ++i)
-	{
-		count[i + 1] += count[i];
-	}
+	sort(vec.begin(), vec.end());
 
-	//정렬하기
-	for (int i = N-1; i >= 0; --i) {
-		result[count[vec[i] + 4000]-1] = vec[i];
-		count[vec[i] + 4000]--;
-	}
-
-	cout << round((double)sum / N) << "\n";
-	cout << result[N/2] << "\n";
-	cout << (maxFrequency - 4000) << "\n";
-	cout << max - min << "\n";
+	cout << round((double)sum / N) << endl;
+	cout << vec[N / 2] << endl;
+	if (second == false)
+		cout << (maxFrequency - 4000) << endl;
+	else
+		cout << (secondFrequency - 4000) << endl;
+	cout << abs(max - min) << endl;
 
 	return 0;
 }

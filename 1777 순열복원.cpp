@@ -5,24 +5,35 @@
 using namespace std;
 
 int main() {
+	ios::sync_with_stdio(false);
+
 	int N;
 	cin >> N;
 
-	vector<int> inversion(N+1);
-	for (int i = 1; i <= N; ++i)
-		cin >> inversion[i];
+	vector<int> inversion;
+	vector<int> arr;
+	inversion.push_back(-1);
+	arr.push_back(-1);
 
-	vector<int> arr(N+1);
-	
-	int c,i,j;
-	for (i = 1; i <= N; ++i) {
-		c = inversion[i];
-		for (j = i; j > i-c; --j) {
-			arr[j] = arr[j-1];
-		}
-		arr[j] = i;
+	int c;
+	for (int i = 1; i <= N; ++i) {
+		cin >> c;
+		inversion.push_back(c);
 	}
-	for (i = 1; i <= N; ++i)
+
+	int pos;
+	for (int i = 1; i <= N; ++i) {
+		if (inversion[i] == 0) {
+			arr.push_back(i);
+		}
+		else {
+			pos = arr.size();
+			pos -= inversion[i];
+			arr[pos] = i;
+		}
+	}
+
+	for (int i = 1; i <= N; ++i)
 		cout << arr[i] << " ";
 	cout << endl;
 
