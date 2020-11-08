@@ -20,8 +20,9 @@ public:
 	int blueN, blueM;   //파란 구슬 위치
 	int count;          //횟수
 
+	//생성자
 	state() {}
-	state(int redN, int redM,int blueN,int blueM, int count) {
+	state(int redN, int redM, int blueN, int blueM, int count) {
 		this->redN = redN;
 		this->redM = redM;
 		this->blueN = blueN;
@@ -32,10 +33,10 @@ public:
 
 int main() {
 	cin >> N >> M;
-	
+
 	int rN, rM, bN, bM;
 	queue<state> q;
-
+	
 	for (int i = 0; i < N; ++i) {
 		for (int j = 0; j < M; ++j) {
 			cin >> board[i][j];
@@ -60,6 +61,7 @@ int main() {
 
 		q.pop();
 
+		//네 방향 확인
 		for (int i = 0; i < 4; ++i) {
 			redFin = false;
 			blueFin = false;
@@ -89,20 +91,17 @@ int main() {
 				nextBN += dn[i];
 				nextBM += dm[i];
 			}
-			
-			//만약 빨간구슬만 구멍에 빠진 경우 출력 후 프로그램 종료
+
+			//만약 빨간 구슬만 구멍에 빠진 경우 출력 후 프로그램 종료
 			if (redFin && !blueFin) {
-				if (now.count + 1 <= 10) {
-					cout << 1 << endl;  //10번 이하로 가능한 경우
-					return 0;
-				}
-				continue;
+				cout << 1 << endl;
+				return 0;
 			}
 			//만약 파란 구슬이 구멍에 빠진 경우 실패
 			else if (blueFin)
 				continue;
-			
-			//만약 겹치게 되는 경우
+
+			//만약 겹치게 되는 경우 기존의 위치를 바탕으로 구슬 하나 위치 재조정
 			if (nextRN == nextBN && nextRM == nextBM) {
 				//왼쪽
 				if (i == 0) {
@@ -116,18 +115,20 @@ int main() {
 				}
 				//위쪽
 				else if (i == 2) {
-					if (now.redN < now.blueN) nextRN--;
-					else nextBN--;
-				}
-				//아래쪽
-				else {
 					if (now.redN < now.blueN) nextBN++;
 					else nextRN++;
 				}
+				//아래쪽
+				else {
+					if (now.redN < now.blueN) nextRN--;
+					else nextBN--;
+				}
 			}
 
-			if(now.count < 10)
+			//다음 진행이 가능한 경우 큐에 넣기
+			if (now.count < 9) {
 				q.push(state(nextRN, nextRM, nextBN, nextBM, now.count + 1));
+			}
 		}
 	}
 
