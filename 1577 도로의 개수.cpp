@@ -7,11 +7,11 @@
 using namespace std;
 
 bool road[101][101][2];       //road[x][y][n]: n = 0 => (x,y-1) to (x,y) possible
-							  //               n = 1 => (x-1,y) to (x,y) possible 
+                              //               n = 1 => (x-1,y) to (x,y) possible 
 
-vector<vector<long long> > dy(101, vector<long long>(101, -1));
+vector<vector<int> > dy(101, vector<int>(101, -1));
 
-long long update(int x, int y) {
+int update(int x,int y) {
 	if (x < 0 || y < 0)
 		return 0;
 	if (dy[x][y] != -1)
