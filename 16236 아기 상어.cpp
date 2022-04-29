@@ -1,3 +1,5 @@
+// https://www.acmicpc.net/problem/16236
+
 #include<iostream>
 #include<algorithm>
 #include<vector>
@@ -19,7 +21,9 @@ class Location {
 public:
 	int y, x;
 
-	Location() {}
+	Location() {
+		x = y = 0;
+	}
 	Location(int y, int x) {
 		this->y = y;
 		this->x = x;
@@ -27,7 +31,7 @@ public:
 };
 
 bool inMap(int y, int x) {
-	return y >= 0 && y < N && x >= 0 && x < N;
+	return y >= 0 && y < N&& x >= 0 && x < N;
 }
 
 //먹을 수 있는 물고기를 탐색하여 위치 반환
@@ -39,7 +43,8 @@ Location eatLoc(Location s) {
 	int minDis = 10000;           //최소 거리
 	q.push(s);
 	visit[s.y][s.x] = 0;
-
+	
+	// BFS
 	while (!q.empty()) {
 		Location loc = q.front();
 		q.pop();
