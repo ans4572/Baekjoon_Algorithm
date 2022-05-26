@@ -1,42 +1,34 @@
-#include <iostream>
-#include <algorithm>
-#include <queue>
-#include <vector>
-#include <string>
-#include <cstring>
-#include <map>
+// https://www.acmicpc.net/problem/9375
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+#include<map>
 
 using namespace std;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	int T;
+	int T, N;
+	string s1, s2;
 	cin >> T;
 
-	int n;
+	for (int tc = 0; tc < T; ++tc) {
+		cin >> N;
 
-	string name, kind;
-	for (int test = 0; test < T; ++test) {
-		map<string, int> dress;
-
-		cin >> n;
-
-		for (int i = 0; i < n; ++i) {
-			cin >> name >> kind;
-
-			dress[kind] += 1;  //개수 증가
+		map<string, int> map;
+		for (int i = 0; i < N; ++i) {
+			cin >> s1 >> s2;
+			if (map[s2]) map[s2]++;
+			else map[s2] = 1;
 		}
 
-		int ans = 1;
-		for (auto it = dress.begin(); it != dress.end(); ++it) {
-			ans *= (it->second + 1);
+		long long ret = 1;
+		for (auto n : map) {
+			ret *= ((long long)n.second + 1);
 		}
-		cout << ans - 1 << endl;
+		cout << ret - 1 << "\n";
 	}
 
 	return 0;
 }
-
