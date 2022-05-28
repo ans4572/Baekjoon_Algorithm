@@ -1,32 +1,34 @@
-/*
-일반 거듭제곱 함수로는 시간내로 풀지 못하므로 분할 정복으로 풀어야함
-절반씩 쪼개며 계산하고 return을 할 때 값은 각 곱하는 수마다 %mod를 해줘야함.
-*/
+// https://www.acmicpc.net/problem/1629
+
 #include<iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+#include<map>
+#include<stack>
 
 using namespace std;
 
-long long myPow(long long base, long long exp, long long mod)
-{
-	//기저사례
-	if (exp == 0)
-		return 1;
+long long A, B, C;
 
-	long long half = myPow(base, exp / 2, mod);
-	if (exp % 2 == 0)
-	{
-		return ((half % mod) * (half % mod)) % mod;
+// 횟수인 b가 1이 될때까지 분할정복 진행
+int cal(long long a, long long b) {
+	if (b == 1) return a % C;
+	else {
+		long long c = cal(a, b / 2);
+		c = (c * c) % C;
+
+		// b가 홀수인 경우 한번 더 곱해주기
+		if (b % 2) c = (c * a) % C;
+
+		return c;
 	}
-	else
-		return ((base * half % mod) * (half % mod)) % mod;
 }
 
-int main()
-{
-	long long A, B, C;
+int main() {
 	cin >> A >> B >> C;
 
-	cout << myPow(A,B,C) << endl;
+	cout << cal(A, B) << endl;
 
 	return 0;
 }
