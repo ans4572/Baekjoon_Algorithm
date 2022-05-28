@@ -1,30 +1,35 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <string>
-#include <stack>
+// https://www.acmicpc.net/problem/3986
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+#include<map>
+#include<stack>
 
 using namespace std;
 
 int main() {
-	int N,ans = 0;
-	cin >> N;
-	
-	for (int i = 0; i < N; ++i) {
-		string word;
-		stack<char> s;
-		cin >> word;
 
-		s.push(word[0]);
-		for (int j = 1; j < word.length(); ++j) {
-			if (!s.empty() && s.top() == word[j])
-				s.pop();
-			else
-				s.push(word[j]);
+	int N;
+	cin >> N;
+
+	int ans = 0;
+	string s;
+	for (int i = 0; i < N; ++i) {
+		cin >> s;
+
+		if (s.length() % 2 == 1)
+			continue;
+
+		stack<char> st;
+		for (char a : s) {
+			if (st.size() && st.top() == a) st.pop();
+			else st.push(a);
 		}
 
-		if (s.empty())
-			ans++;
+		// 스택이 비어있음 == 조건 만족
+		if (st.empty()) ans++;
 	}
 
 	cout << ans << endl;
